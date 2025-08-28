@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Decode Message</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      margin-top: 20px;
+    }
+    input, button {
+      margin: 10px;
+      padding: 10px 15px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background: dodgerblue;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background: royalblue;
+    }
+    #output {
+      margin-top: 20px;
+      font-weight: bold;
+      color: green;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔓 Decode Message from Image</h1>
+
+  <input type="file" id="encodedImage" accept="image/*"><br><br>
+  <button onclick="decodeMessage()">Decode</button>
+
+  <h3>Decoded Message:</h3>
+  <p id="output"></p>
+
+  <script>
+    function decodeMessage() {
+      const file = document.getElementById('encodedImage').files[0];
+      if (!file) {
+        alert("Please select an encoded image");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+          canvas.width = img.width;
+          canvas.height = img.height;
+          ctx.drawImage(img, 0, 0);
+
+          const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          const data = imageData.data;
+
+          let message = "";
+          for (let i = 0; i < data.length; i += 4) {
+            if (data[i] === 0) break; // end marker
+            message += String.fromCharCode(data[i]);
+          }
+
+          document.getElementById('output').textContent = message || "No hidden message found!";
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  </script>
+</body>
+</html>
