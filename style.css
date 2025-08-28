@@ -1,0 +1,28 @@
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background: #f5f5f5;
+  margin: 0;
+  padding: 0;
+}
+header, footer {
+  background: #222;
+  color: white;
+  padding: 10px;
+}
+button {
+  margin: 10px;
+  padding: 10px 20px;
+  background: dodgerblue;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+button:hover {
+  background: royalblue;
+}
+textarea {
+  width: 300px;
+  height: 100px;
+}
